@@ -1,5 +1,5 @@
 import stanfordnlp 
-import wordnet
+from nltk.corpus import wordnet
 nlp = stanfordnlp.Pipeline(processors = "tokenize,mwt,lemma,pos")
 
 

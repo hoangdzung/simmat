@@ -1,5 +1,5 @@
 import numpy as np 
-import scipy.optimize.linear_sum_assignment as lsa 
+from scipy.optimize import linear_sum_assignment as lsa 
 from utils import getLemmas, match, path_similarity
 
 def matchIdenticalPhrases(L1, L2):
@@ -20,7 +20,7 @@ def matchIdenticalPhrases(L1, L2):
             P.add(new)
             considered1 = considered1.union(set(range(pos[0],pos[0]+len(new))))
             considered2 = considered2.union(set(range(pos[1],pos[1]+len(new))))
-            print(new, considered1,considered2)
+            # print(new, considered1,considered2)
         else:
             break
     
@@ -33,7 +33,7 @@ def matching(L1, L2):
             sim_matrix[i][j] = path_similarity(w1, w2)
 
     row_ind, col_ind = lsa(-sim_matrix)
-    return sim_matrix[row_ind, col_ind]
+    return sim_matrix[row_ind, col_ind].tolist(), row_ind.tolist(), col_ind.tolist()
     
 def relmat(N, M, alpha=0.2):
     numerator = sum([len(i) + len(i)**alpha for i in N])
@@ -67,8 +67,12 @@ def simmat(s1, s2, alpha=0.2):
     lemma2 = [lemma2[i] for i in range(len(lemma2)) if pos2[i] not in ['IN', 'PRP$', 'MD', '.']]
 
     ### Phase 3 
-    match_pairs = matching(lemma1, lemma2)
+    match_pairs, ind1, ind2 = matching(lemma1, lemma2)
+    for i, j in zip(ind1, ind2):
+        print(lemma1[i], lemma2[j])
 
+    match_pairs = [i for i in match_pairs if i >0]
+    
     ### Phase 4
     rel_mat = relmat(P, match_pairs, alpha)
 
