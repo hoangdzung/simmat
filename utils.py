@@ -8,12 +8,12 @@ def getLemmas(sentence):
     return [word.lemma for word in doc.sentences[0].words], [word.xpos for word in doc.sentences[0].words] 
 
 def path_similarity(w1, w2):
-    sims = []
+    sims = [0]
     for i in wordnet.synsets(w1):
         for j in wordnet.synsets(w2):
             sims.append(i.path_similarity(j))
 
-    return max([i for i in sims if i])
+    return max([i for i in sims if i is not None])
 
 def match(L1, L2, i, j):
     end1 = i 
