@@ -9,10 +9,12 @@ def getLemmas(sentence):
 
 def path_similarity(w1, w2):
     sims = [0]
-    for i in wordnet.synsets(w1):
-        for j in wordnet.synsets(w2):
-            sims.append(i.path_similarity(j))
-
+    try:
+        for i in wordnet.synsets(w1):
+            for j in wordnet.synsets(w2):
+                sims.append(i.path_similarity(j))
+    except:
+        pass
     return max([i for i in sims if i is not None])
 
 def match(L1, L2, i, j):
