@@ -45,7 +45,7 @@ def relmat(N, M, alpha=0.2):
     return numerator/max(denominator,1e-20)
 
 def p(rew1, rew2):
-    p = abs(rew1 - rew2) / max(rew1, rew2)
+    p = abs(rew1 - rew2) / max(rew1, rew2,1e-10)
     p = 0.5*(p**3)
     return  p 
 
@@ -68,9 +68,6 @@ def simmat(s1, s2, alpha=0.2):
 
     ### Phase 3 
     match_pairs, ind1, ind2 = matching(lemma1, lemma2)
-    for i, j in zip(ind1, ind2):
-        print(lemma1[i], lemma2[j])
-
     match_pairs = [i for i in match_pairs if i >0]
 
     ### Phase 4

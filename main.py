@@ -1,5 +1,6 @@
 from sklearn.metrics import roc_auc_score
 import numpy as np 
+from tqdm import tqdm
 
 from algo import simmat
 from DLCS import get_sim
