@@ -42,7 +42,7 @@ def relmat(N, M, alpha=0.2):
     numerator += sum([i**alpha for i in M])
     denominator += 2*len(M)
 
-    return numerator/denominator
+    return numerator/max(denominator,1e-20)
 
 def p(rew1, rew2):
     p = abs(rew1 - rew2) / max(rew1, rew2)
