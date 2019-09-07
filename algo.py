@@ -72,15 +72,15 @@ def simmat(s1, s2, alpha=0.2):
         print(lemma1[i], lemma2[j])
 
     match_pairs = [i for i in match_pairs if i >0]
-    
+
     ### Phase 4
     rel_mat = relmat(P, match_pairs, alpha)
 
-    simmat = rel_mat * (1-p(len(lemma1) - len(match_pairs), len(lemma2) - len(match_pairs)))
+    simmat = rel_mat * (1-p(len(lemma1), len(lemma2)))
 
     return simmat
     
 if __name__ == '__main__':
-    sen1 = input("Sentence 1:")
-    sen2 = input("Sentence 2:")
+    sen1 = "The study is being published today in the journal Science"
+    sen2 = "Their findings were published today in Science."
     print(simmat(sen1, sen2))
