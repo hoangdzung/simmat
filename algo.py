@@ -45,7 +45,7 @@ def relmat(N, M, alpha=0.2):
     return numerator/denominator
 
 def p(rew1, rew2):
-    p = abs(rew1 - rew2) / max(rew1, rew2)
+    p = abs(rew1 - rew2) / max(rew1, rew2,1e-10)
     p = 0.5*(p**3)
     return  p 
 

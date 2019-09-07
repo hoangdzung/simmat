@@ -6,7 +6,7 @@ from algo import simmat
 
 true_labels = []
 pred_probs = []
-for line in tqdm(open('data/msr_paraphrase.txt')):
+for line in tqdm(open('data/msr_paraphrase.txt').readlines()):
     label, _,_,sen1, sen2 = line.strip().split("\t")
     true_labels.append(int(label[-1]))
     pred_probs.append(simmat(sen1, sen2))
