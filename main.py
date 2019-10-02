@@ -18,7 +18,7 @@ for line in tqdm(open(filename).readlines()):
         label, _,_,sen1, sen2 = line.strip().split("\t")
         label = label[-1]
     elif filename.endswith('tsv'):
-        if filename.startswith('quora'):
+        if filename.startswith('quora') or 'all.tsv' in filename:
             _,_,_, sen1, sen2. label = line.strip().split('\t')
         else:
             _,sen1, sen2, label = line.strip().split("\t")
