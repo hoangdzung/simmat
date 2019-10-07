@@ -30,3 +30,4 @@ for line in tqdm(open(filename).readlines()):
     else:
         pred_probs.append(get_sim(sen1, sen2))
 print(roc_auc_score(np.array(true_labels), np.array(pred_probs)))
+np.save('pred_'+mode+'.npy', np.array(pred_probs))

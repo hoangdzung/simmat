@@ -23,13 +23,19 @@ for line in tqdm(open(filename).readlines()):
             _,_,_, sen1, sen2, label = line.strip().split('\t')
         else:
             _,sen1, sen2, label = line.strip().split("\t")
-    inputs.append([sen1, sen2])
+    inputs.append((sen1, sen2))
     true_labels.append(int(label))
 
+def worker1(x):
+    return simmat(x[0],x[1])
+
+def worker2(x):
+    return get_sim(x[0],x[1])
+
 if __name__ == '__main__':
-    p = Pool(4)
+    p = Pool(12)
     if mode == 'simmat':
-        pred_probs = p.map(simmat, inputs)
+        pred_probs = p.map(worker1, inputs)
     else:
-        pred_probs = p.map(get_sim, work)
+        pred_probs = p.map(worker2, inputs)
     print(roc_auc_score(np.array(true_labels), np.array(pred_probs)))
