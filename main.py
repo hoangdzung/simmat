@@ -14,7 +14,7 @@ print(mode, filename)
 true_labels = []
 pred_probs = []
 for line in tqdm(open(filename).readlines()):
-    if filename.endswith('txt') and filename.startswith('msr'):
+    if filename.endswith('txt') and 'msr' in filename:
         label, _,_,sen1, sen2 = line.strip().split("\t")
         label = label[-1]
     elif filename.endswith('tsv'):

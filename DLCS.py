@@ -24,7 +24,7 @@ def get_common_substring_matrix(strX, strY):
             # # if strX[i] != strY[j]: 
             #     continue
             sim = path_similarity(strX[i], strY[j])
-            elif i==0 or j ==0:
+            if i==0 or j ==0:
                 edit_matrix[i][j]=sim
             else:
                 edit_matrix[i][j]=sim+edit_matrix[i-1][j-1]
