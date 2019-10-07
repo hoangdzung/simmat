@@ -24,7 +24,8 @@ def get_common_substring_matrix(strX, strY,use_sym):
             # # if strX[i] != strY[j]: 
             #     continue
             if use_sym:
-                sim = path_similarity(strX[i], strY[j])
+                if strX[i] == strY[j]: sim=1
+                else: sim = path_similarity(strX[i], strY[j])
                 if i==0 or j ==0:
                     edit_matrix[i][j]=sim
                 else:
@@ -68,7 +69,7 @@ def getCommonSubString(srcSen, susSen, srcToken, susToken, use_sym=False):
         for i in range(startSusIndex+1,endSusIndex+1):
             susSenCopy[startSusIndex]+='+'+susSen[i]
             susToken[startSusIndex] += susToken[i]
-
+        susSenCopy[startSusIndex] = srcSenCopy[startSrcIndex]
     squeezedSrcSen = []
     squeezedSusSen = []
     squeezedSrcToken = []
@@ -87,14 +88,17 @@ def getCommonSubString(srcSen, susSen, srcToken, susToken, use_sym=False):
 def get_sim(srcSen, susSen, use_sym=False):
     srcSen, _ = getLemmas(srcSen)
     susSen, _ = getLemmas(susSen)
+    srcSen = [i for i in srcSen if type(i)==str]
+    susSen = [i for i in susSen if type(i)==str]
     originSrcToken = [[i] for i in range(len(srcSen))]
     originSusToken = [[i] for i in range(len(susSen))]
 
     result = getCommonSubString(srcSen, susSen, originSrcToken, originSusToken, use_sym)
+    #print(result)
     if len(result[-1]) ==0:
         return 0
-    result = getCommonSubString(*(result[:-1]+[use_sym]))
-    # print(result[:2])
+    result = getCommonSubString(*(result[:-1]))
+    #print(result)
     commonLength = 0
     for src, sus in result[-1]:
         assert len(src) == len(sus)
@@ -106,3 +110,6 @@ def get_sim(srcSen, susSen, use_sym=False):
         commonLength += smoothFunct(meanSpace) * subCommonLength
 
     return commonLength/ min(len(srcSen),len(susSen))
+
+if __name__ == '__main__':
+    get_sim("I am a handsome boy", "He is a pretty main")
