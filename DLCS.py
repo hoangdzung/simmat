@@ -2,6 +2,7 @@ import numpy as np
 import math
 from nltk.corpus import wordnet
 from utils import getLemmas
+from utils import path_similarity
 
 def smoothFunct(x):
     return math.log1p(max([1, math.e + 0.5 -0.5*x]))
@@ -19,13 +20,14 @@ def get_common_substring_matrix(strX, strY):
     edit_matrix = [[0] * (lenY) for _ in range(lenX)]
     for i in range(lenX):
         for j in range(lenY):
-            if not is_synonyms(strX[i], strY[j]):
-            # if strX[i] != strY[j]: 
-                continue
+            # if not is_synonyms(strX[i], strY[j]):
+            # # if strX[i] != strY[j]: 
+            #     continue
+            sim = path_similarity(strX[i], strY[j])
             elif i==0 or j ==0:
-                edit_matrix[i][j]=1
+                edit_matrix[i][j]=sim
             else:
-                edit_matrix[i][j]=1+edit_matrix[i-1][j-1]
+                edit_matrix[i][j]=sim+edit_matrix[i-1][j-1]
     return np.array(edit_matrix)
 
 def getCommonSubString(srcSen, susSen, srcToken, susToken):
