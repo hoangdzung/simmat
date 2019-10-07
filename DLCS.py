@@ -13,7 +13,7 @@ def is_synonyms(x, y):
 
     return False
 
-def get_common_substring_matrix(strX, strY):
+def get_common_substring_matrix(strX, strY,use_sym):
     lenX = len(strX)
     lenY = len(strY)
     
@@ -23,15 +23,24 @@ def get_common_substring_matrix(strX, strY):
             # if not is_synonyms(strX[i], strY[j]):
             # # if strX[i] != strY[j]: 
             #     continue
-            sim = path_similarity(strX[i], strY[j])
-            elif i==0 or j ==0:
-                edit_matrix[i][j]=sim
+            if use_sym:
+                sim = path_similarity(strX[i], strY[j])
+                if i==0 or j ==0:
+                    edit_matrix[i][j]=sim
+                else:
+                    edit_matrix[i][j]=sim+edit_matrix[i-1][j-1]
             else:
-                edit_matrix[i][j]=sim+edit_matrix[i-1][j-1]
+                if not is_synonyms(strX[i], strY[j]):
+                # if strX[i] != strY[j]: 
+                    continue
+                elif i==0 or j ==0:
+                    edit_matrix[i][j]=1
+                else:
+                    edit_matrix[i][j]=1+edit_matrix[i-1][j-1]
     return np.array(edit_matrix)
 
-def getCommonSubString(srcSen, susSen, srcToken, susToken):
-    edit_matrix = get_common_substring_matrix(srcSen, susSen)
+def getCommonSubString(srcSen, susSen, srcToken, susToken, use_sym=False):
+    edit_matrix = get_common_substring_matrix(srcSen, susSen,use_sym)
     # print(edit_matrix)
     srcSenCopy = srcSen[:]
     susSenCopy = susSen[:]
@@ -75,16 +84,16 @@ def getCommonSubString(srcSen, susSen, srcToken, susToken):
         zipSqueezedIndexs.append((srcToken[i], susToken[j]))
     return squeezedSrcSen, squeezedSusSen, squeezedSrcToken, squeezedSusToken, zipSqueezedIndexs
 
-def get_sim(srcSen, susSen):
+def get_sim(srcSen, susSen, use_sym=False):
     srcSen, _ = getLemmas(srcSen)
     susSen, _ = getLemmas(susSen)
     originSrcToken = [[i] for i in range(len(srcSen))]
     originSusToken = [[i] for i in range(len(susSen))]
 
-    result = getCommonSubString(srcSen, susSen, originSrcToken, originSusToken)
+    result = getCommonSubString(srcSen, susSen, originSrcToken, originSusToken, use_sym)
     if len(result[-1]) ==0:
         return 0
-    result = getCommonSubString(*result[:-1])
+    result = getCommonSubString(*(result[:-1]+[use_sym]))
     # print(result[:2])
     commonLength = 0
     for src, sus in result[-1]:

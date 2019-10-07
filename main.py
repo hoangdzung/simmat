@@ -27,9 +27,11 @@ for line in tqdm(open(filename).readlines()):
     
     if mode == 'simmat':
         pred_probs.append(simmat(sen1, sen2))
+    elif mode == 'use_sym':
+        pred_probs.append(get_sim(sen1, sen2, True))
     else:
-        pred_probs.append(get_sim(sen1, sen2))
-
+        pred_probs.append(get_sim(sen1, sen2, False))
+        
 print(roc_auc_score(np.array(true_labels), np.array(pred_probs)))
 
 from sklearn.model_selection import  KFold
